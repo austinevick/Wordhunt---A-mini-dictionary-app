@@ -1,0 +1,36 @@
+name: wordhunt
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.1.0+2
+
+environment:
+  sdk: ">=2.16.2 <3.0.0"
+
+dependencies:
+  audioplayers: ^0.20.1
+  cupertino_icons: ^1.0.2
+  flutter:
+    sdk: flutter
+  flutter_native_splash: ^2.1.2+1
+  google_fonts: ^2.3.1
+  http: ^0.13.4
+  riverpod: ^1.0.3
+  shared_preferences: ^2.0.13
+
+dev_dependencies:
+  flutter_lints: ^1.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter_native_splash:
+  image: image/logo.png
+  color: "#365e91"
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - image/
+ 
