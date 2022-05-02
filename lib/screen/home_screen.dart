@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:wordhunt/main.dart';
 import '../constant.dart';
 import '../model/word_model.dart';
 
@@ -37,18 +38,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       widget.model!.phonetics![0].text!,
                       style: const TextStyle(color: appColor),
                     ),
-                    IconButton(
-                        onPressed: () async {
-                          try {
-                            await audioPlayer
-                                .play(widget.model!.phonetics![0].audio!);
-                          } on SocketException catch (_) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                snackBar('No internet connection'));
-                            rethrow;
-                          }
-                        },
-                        icon: const Icon(Icons.volume_up, color: appColor)),
+                    widget.model!.phonetics![0].audio!.isEmpty
+                        ? IconButton(
+                            onPressed: () async {
+                              try {
+                                await audioPlayer
+                                    .play(widget.model!.phonetics![1].audio!);
+                              } on SocketException catch (_) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    snackBar('No internet connection'));
+                                rethrow;
+                              }
+                            },
+                            icon: const Icon(Icons.volume_up, color: appColor))
+                        : IconButton(
+                            onPressed: () async {
+                              try {
+                                await audioPlayer
+                                    .play(widget.model!.phonetics![0].audio!);
+                              } on SocketException catch (_) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    snackBar('No internet connection'));
+                                rethrow;
+                              }
+                            },
+                            icon: const Icon(Icons.volume_up, color: appColor)),
                   ],
                 ),
                 const SizedBox(height: 10),

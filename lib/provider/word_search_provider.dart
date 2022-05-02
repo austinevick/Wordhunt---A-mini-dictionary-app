@@ -1,22 +1,17 @@
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../model/word_model.dart';
-import '../repository/word_search_repository.dart';
+import 'package:wordhunt/db/word_db.dart';
+import 'package:wordhunt/model/word_history_model.dart';
 
 class WordSearchProvider {
-  static String WORDSEARCH = 'wordsearch';
-
-  static Future<WordModel> getWordData(String query) async {
-    return await WordSearchRepository.getWordData(query);
+  static Future<List<WordHistoryModel>> getWordHistory() async {
+    return await WordDBHelper.getWordHistory();
   }
 
-  static Future<bool> saveWordHistory(List<String> wordList) async {
-    final pref = await SharedPreferences.getInstance();
-    return pref.setStringList(WORDSEARCH, wordList);
+  static Future<WordHistoryModel> saveWordHistory(
+      WordHistoryModel model) async {
+    return await WordDBHelper.saveWord(model);
   }
 
-  static Future<List<String>> getWordHistory() async {
-    final pref = await SharedPreferences.getInstance();
-    return pref.getStringList(WORDSEARCH) ?? [];
+  static Future<int> deleteHistory(int id) async {
+    return await WordDBHelper.deleteWord(id);
   }
 }

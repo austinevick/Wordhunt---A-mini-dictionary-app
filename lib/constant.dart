@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const style = TextStyle(fontWeight: FontWeight.bold, fontSize: 25);
-
+const darkModeKey = "isDarkMode";
 const appColor = Color(0xff003cc0);
 
 SnackBar snackBar(text) => SnackBar(
