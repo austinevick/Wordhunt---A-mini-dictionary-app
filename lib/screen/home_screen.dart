@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:wordhunt/main.dart';
-import '../constant.dart';
+import '../common/constant.dart';
 import '../model/word_model.dart';
 
 class HomeScreen extends StatefulWidget {

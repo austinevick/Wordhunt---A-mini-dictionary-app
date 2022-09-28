@@ -1,10 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:wordhunt/loading_widget.dart';
+import 'package:wordhunt/widget/loading_widget.dart';
 import 'package:wordhunt/model/word_history_model.dart';
 import 'package:wordhunt/provider/word_search_provider.dart';
-import '../constant.dart';
+import '../common/constant.dart';
 import '../model/word_model.dart';
 import '../repository/word_search_repository.dart';
 import 'home_screen.dart';
@@ -52,7 +51,7 @@ class _WordSearchScreenState extends State<WordSearchScreen> {
     } catch (_) {
       setState(() => isLoading = false);
       ScaffoldMessenger.of(context)
-          .showSnackBar(snackBar('${controller.text}not found'));
+          .showSnackBar(snackBar('${controller.text} not found'));
       rethrow;
     }
   }
@@ -63,7 +62,7 @@ class _WordSearchScreenState extends State<WordSearchScreen> {
     super.initState();
   }
 
-  init() async {
+  void init() async {
     Future<List<WordHistoryModel>> search = WordSearchProvider.getWordHistory();
     await search.then((value) => setState(() => searchResult = value));
   }
@@ -80,106 +79,130 @@ class _WordSearchScreenState extends State<WordSearchScreen> {
       child: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Scaffold(
-            body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 14.0,
-              right: 14,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 100),
-                const Text(
-                  'Dictionary',
-                  style: style,
-                ),
-                const SizedBox(height: 18),
-                TextField(
-                  cursorColor: Colors.black,
-                  cursorWidth: 1,
-                  onEditingComplete: () async =>
-                      await wordSearchResult(controller.text)
-                          .whenComplete(() => init()),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 17,
-                  ),
-                  controller: controller,
-                  decoration: InputDecoration(
-                      fillColor: Colors.grey.withOpacity(0.2),
-                      filled: true,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      hintText: 'Search here',
-                      suffixIcon: IconButton(
-                          onPressed: () async =>
-                              await wordSearchResult(controller.text)
-                                  .whenComplete(() => init()),
-                          icon: LoadingWidget(
-                              isLoading: isLoading,
-                              child: const Icon(
-                                Icons.arrow_forward_ios,
-                              ))),
-                      prefixIcon: const Icon(Icons.search)),
-                ),
-                const SizedBox(height: 20),
-                const Text('Recent', style: style),
-                const SizedBox(height: 10),
-                searchResult.isEmpty
-                    ? Center(
-                        child: Text('Your search history will appear here',
-                            style: style.copyWith(
-                                fontSize: 14, color: Colors.grey)))
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                            searchResult.length,
-                            (i) => Padding(
-                                  padding: const EdgeInsets.only(bottom: 8),
-                                  child: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(color: Colors.grey)),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: InkWell(
-                                            onTap: () async {
-                                              setState(() => controller.text =
-                                                  searchResult[i].word!);
-                                              await wordSearchResult(
-                                                  controller.text);
-                                            },
-                                            child: SizedBox(
-                                              height: 40,
-                                              width: double.infinity,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  searchResult[i].word!,
-                                                  style: style.copyWith(
-                                                      fontSize: 15),
+            body: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 14.0, right: 14),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 100),
+                      const Text(
+                        'Dictionary',
+                        style: style,
+                      ),
+                      const SizedBox(height: 18),
+                      TextField(
+                        cursorColor: Colors.black,
+                        cursorWidth: 1,
+                        onEditingComplete: () async =>
+                            await wordSearchResult(controller.text)
+                                .whenComplete(() => init()),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 17),
+                        controller: controller,
+                        decoration: InputDecoration(
+                            fillColor: Colors.grey.withOpacity(0.2),
+                            filled: true,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            hintText: 'Search here',
+                            suffixIcon: IconButton(
+                                onPressed: () async =>
+                                    await wordSearchResult(controller.text)
+                                        .whenComplete(() => init()),
+                                icon: LoadingWidget(
+                                    isLoading: isLoading,
+                                    child: const Icon(
+                                      Icons.arrow_forward_ios,
+                                    ))),
+                            prefixIcon: const Icon(Icons.search)),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text('Recent search', style: style),
+                      const SizedBox(height: 10),
+                      searchResult.isEmpty
+                          ? Center(
+                              child: Text(
+                                  'Your search history will appear here',
+                                  style: style.copyWith(
+                                      fontSize: 14, color: Colors.grey)))
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(
+                                  searchResult.length,
+                                  (i) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 8),
+                                        child: DecoratedBox(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              border: Border.all(
+                                                  color: Colors.grey)),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () async {
+                                                    setState(() => controller
+                                                            .text =
+                                                        searchResult[i].word!);
+                                                    await wordSearchResult(
+                                                        controller.text);
+                                                  },
+                                                  child: SizedBox(
+                                                    height: 40,
+                                                    width: double.infinity,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                        searchResult[i].word!,
+                                                        style: style.copyWith(
+                                                            fontSize: 15),
+                                                      ),
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                              IconButton(
+                                                  onPressed: () =>
+                                                      WordSearchProvider
+                                                              .deleteHistory(
+                                                                  searchResult[
+                                                                          i]
+                                                                      .id!)
+                                                          .whenComplete(
+                                                              () => init()),
+                                                  icon: const Icon(Icons.clear))
+                                            ],
                                           ),
                                         ),
-                                        IconButton(
-                                            onPressed: () => WordSearchProvider
-                                                    .deleteHistory(
-                                                        searchResult[i].id!)
-                                                .whenComplete(() => init()),
-                                            icon: const Icon(Icons.clear))
-                                      ],
-                                    ),
-                                  ),
-                                )),
-                      )
-              ],
+                                      )),
+                            ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
+            MaterialButton(
+              onPressed: () {},
+              height: 60,
+              minWidth: 300,
+              shape: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(
+                    width: 2,
+                    color: const Color(0xff292d36).withOpacity(0.5),
+                  )),
+              child: Text('Take a quiz', style: style.copyWith(fontSize: 18)),
+            ),
+            const SizedBox(height: 12)
+          ],
         )),
       ),
     );

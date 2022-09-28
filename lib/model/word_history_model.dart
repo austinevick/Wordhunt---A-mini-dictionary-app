@@ -8,18 +8,6 @@ class WordHistoryModel {
     this.dateTime,
   });
 
-  WordHistoryModel copyWith({
-    int? id,
-    String? word,
-    DateTime? dateTime,
-  }) {
-    return WordHistoryModel(
-      id: id ?? this.id,
-      word: word ?? this.word,
-      dateTime: dateTime ?? this.dateTime,
-    );
-  }
-
   Map<String, dynamic> toMap() {
     return {
       'id': id,
